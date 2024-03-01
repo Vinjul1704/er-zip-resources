@@ -11,9 +11,13 @@ If you would like to contact me, feel free to do so via Discord: `virazy`
 ## External links and documents
 
 Elden Ring speedrun leaderboards: https://www.speedrun.com/eldenring
+
 Zip wiki page: https://soulsspeedruns.com/eldenring/zipping
+
 Zip document (outdated, use wiki page instead): https://hackmd.io/e5_bzQiCRjiAhdv7Eq5Dhg?view
+
 Any% Unrestricted speedrun document (not 100% up-to-date): https://hackmd.io/oMxHCO0JSsS30HUPLk7T8g
+
 Any% Unrestricted TAS + resources: https://github.com/Vinjul1704/er-tas
 
 ## TODO / Future plans

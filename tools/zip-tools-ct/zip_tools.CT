@@ -1,0 +1,1606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="42">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>10</ID>
+      <Description>"Fake Zip"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ Game   : eldenring.exe
+  Version: 
+  Date   : 
+  Author : 
+
+
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,eldenring.exe,41 0F 28 F5 49 8B D8 48 8B F9) // should be unique
+alloc(newmem,$1000,INJECT)
+
+label(set_movement)
+label(code)
+label(return)
+
+newmem:
+set_movement:
+dd 0
+
+code:
+  movaps xmm6,xmm13
+  mov rbx,r8
+  mov rdi,rcx
+  mov rcx, [rdi+8]
+  mov eax, [rcx+8]
+  mov ecx, [rcx+c]
+  cmp eax, 0x16900000
+  jne skip
+  cmp ecx, 0xffffffff
+  jne skip
+  mov eax, [set_movement]
+  test eax, eax
+  jz skip
+  mov [rbx+8], eax
+  mov [set_movement], 0
+skip:
+  mov rcx, rdi
+  jmp return
+
+INJECT:
+  jmp code
+  db 90 90 90 90 90
+return:
+registersymbol(INJECT)
+registersymbol(set_movement)
+
+[DISABLE]
+
+INJECT:
+  db 41 0F 28 F5 49 8B D8 48 8B F9
+
+unregistersymbol(INJECT)
+unregistersymbol(set_movement)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: eldenring.exe+45E724
+
+eldenring.exe+45E6F5: 44 0F 59 F8              - mulps xmm15,xmm0
+eldenring.exe+45E6F9: 0F 57 C0                 - xorps xmm0,xmm0
+eldenring.exe+45E6FC: F3 0F 59 D2              - mulss xmm2,xmm2
+eldenring.exe+45E700: 41 0F 28 CF              - movaps xmm1,xmm15
+eldenring.exe+45E704: 0F 15 C8                 - unpckhps xmm1,xmm0
+eldenring.exe+45E707: 0F 28 87 60 01 00 00     - movaps xmm0,[rdi+00000160]
+eldenring.exe+45E70E: 44 0F C6 F9 C4           - shufps xmm15,xmm1,-3C
+eldenring.exe+45E713: F3 0F 10 4F 70           - movss xmm1,[rdi+70]
+eldenring.exe+45E718: 41 0F 58 C7              - addps xmm0,xmm15
+eldenring.exe+45E71C: F3 0F 5C 8F 80 00 00 00  - subss xmm1,[rdi+00000080]
+// ---------- INJECTING HERE ----------
+eldenring.exe+45E724: 0F 29 44 24 50           - movaps [rsp+50],xmm0
+// ---------- DONE INJECTING  ----------
+eldenring.exe+45E729: F3 0F 10 47 78           - movss xmm0,[rdi+78]
+eldenring.exe+45E72E: F3 0F 5C 87 88 00 00 00  - subss xmm0,[rdi+00000088]
+eldenring.exe+45E736: F3 0F 59 C9              - mulss xmm1,xmm1
+eldenring.exe+45E73A: F3 0F 59 C0              - mulss xmm0,xmm0
+eldenring.exe+45E73E: F3 0F 58 D1              - addss xmm2,xmm1
+eldenring.exe+45E742: F3 0F 58 D0              - addss xmm2,xmm0
+eldenring.exe+45E746: F3 0F 10 05 D2 4B B9 02  - movss xmm0,[eldenring.exe+2FF3320]
+eldenring.exe+45E74E: 0F 2F C2                 - comiss xmm0,xmm2
+eldenring.exe+45E751: 76 1E                    - jna eldenring.exe+45E771
+eldenring.exe+45E753: 80 BF 40 01 00 00 00     - cmp byte ptr [rdi+00000140],00
+}
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>9</ID>
+          <Description>"Set Motion Weight"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>set_movement</Address>
+          <Hotkeys>
+            <Hotkey>
+              <Action>Set Value</Action>
+              <Keys>
+                <Key>90</Key>
+              </Keys>
+              <Value>-520.136</Value>
+              <ID>0</ID>
+            </Hotkey>
+            <Hotkey>
+              <Action>Set Value</Action>
+              <Keys>
+                <Key>85</Key>
+              </Keys>
+              <Value>-561.740</Value>
+              <ID>1</ID>
+            </Hotkey>
+            <Hotkey>
+              <Action>Set Value</Action>
+              <Keys>
+                <Key>73</Key>
+              </Keys>
+              <Value>-3569</Value>
+              <ID>2</ID>
+            </Hotkey>
+          </Hotkeys>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>34</ID>
+      <Description>"Zip Timer"</Description>
+      <Options moActivateChildrenAsWell="1" moDeactivateChildrenAsWell="1"/>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>30</ID>
+          <Description>"Enable Zip Timing"</Description>
+          <Options moHideChildren="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+aobScanModule(INJECT, eldenring.exe, BA 00 01 00 00 48 8B 01 FF 50 48)
+aobscanmodule(INJECT2,eldenring.exe,BA 14 00 00 00 48 8B 01 FF 50 48)
+aobscanmodule(INJECT_input,eldenring.exe,48 8B 01 41 0F 28 C8 FF 50 38)
+alloc(newmem,$1000,INJECT)
+
+label(frame)
+label(frame_block_start)
+label(frame_block_end)
+label(frame_walk1_start)
+label(frame_walk1_dur)
+label(frame_walk2_start)
+label(frame_walk2_dur)
+label(frame_target)
+
+newmem:
+// CONFIG
+// For keys https://github.com/glfw/glfw/blob/master/deps/mingw/dinput.h#L509
+// For mouse buttons https://github.com/glfw/glfw/blob/master/deps/mingw/dinput.h#L2131
+forward_type:
+db 1 // 0 = mouse, 1 = keyboard
+foward_input:
+db 11 // DIK_W
+block_type:
+db 0 // 0 = mouse, 1 = keyboard
+block_input:
+db 1 // DIMOFS_BUTTON1 (right click)
+// END CONFIG
+
+prev_keyboard:
+dq 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+dq 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+keyboard:
+dq 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+dq 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+prev_mouse:
+dd 0, 0, 0, 0, 0
+mouse:
+dd 0, 0, 0, 0, 0
+
+frame:
+dq 0
+frame_block_start:
+dq 0
+frame_block_end:
+dq 0
+walk_count:
+dd 0
+frame_target:
+dq 0
+frame_walk1_start:
+dq 0
+frame_walk1_dur:
+dq 0
+frame_walk1_end:
+dq 0
+frame_walk2_start:
+dq 0
+frame_walk2_dur:
+dq 0
+
+// rcx = dst, rdx = src, r8 = len
+my_memcpy:
+  test r8, r8
+  jz memcpy_end
+memcpy_next:
+  mov al, [rdx]
+  mov [rcx], al
+  inc rcx
+  inc rdx
+  dec r8
+  test r8, r8
+  jnz memcpy_next
+memcpy_end:
+  ret
+
+// rcx = config input
+is_pressed:
+  mov al, [rcx]
+  xor rdx, rdx
+  mov dl, [rcx+1]
+  test al, al
+  jnz is_pressed_keyboard
+  add dl, C
+  mov rax, prev_mouse
+  mov al, [rax+rdx]
+  test al, al
+  jnz is_pressed_not_pressed
+  mov rax, mouse
+  mov al, [rax+rdx]
+  test al, al
+  jz is_pressed_not_pressed
+  jmp is_pressed_pressed
+is_pressed_keyboard:
+  mov rax, prev_keyboard
+  mov al, [rax+rdx]
+  test al, al
+  jnz is_pressed_not_pressed
+  mov rax, keyboard
+  mov al, [rax+rdx]
+  test al, al
+  jz is_pressed_not_pressed
+is_pressed_pressed:
+  mov al, 1
+  ret
+is_pressed_not_pressed:
+  xor al, al
+  ret
+
+// rcx = config input
+is_released:
+  mov al, [rcx]
+  xor rdx, rdx
+  mov dl, [rcx+1]
+  test al, al
+  jnz is_released_keyboard
+  add dl, C
+  mov rax, prev_mouse
+  mov al, [rax+rdx]
+  test al, al
+  jz is_released_false
+  mov rax, mouse
+  mov al, [rax+rdx]
+  test al, al
+  jnz is_released_false
+  jmp is_released_true
+is_released_keyboard:
+  mov rax, prev_keyboard
+  mov al, [rax+rdx]
+  test al, al
+  jz is_released_false
+  mov rax, keyboard
+  mov al, [rax+rdx]
+  test al, al
+  jnz is_released_false
+is_released_true:
+  mov al, 1
+  ret
+is_released_false:
+  xor al, al
+  ret
+
+// rcx = config input
+is_down:
+  mov al, [rcx]
+  xor rdx, rdx
+  mov dl, [rcx+1]
+  test al, al
+  jnz is_down_keyboard
+  add dl, C
+  mov rax, mouse
+  mov al, [rax+rdx]
+  ret
+is_down_keyboard:
+  mov rax, keyboard
+  mov al, [rax+rdx]
+  ret
+
+input_hook:
+  mov rax,qword ptr ds:[rcx]
+  movaps xmm1,xmm8
+  call qword ptr ds:[rax+38]
+  push rbx
+  push rax
+  push rcx
+  push rdx
+  mov rbx, [frame]
+  inc rbx
+  mov [frame], rbx
+
+  mov rcx, block_type
+  call is_pressed
+  test al, al
+  jz input_hook_after_block_press
+  mov [frame_block_start], rbx
+  mov [frame_block_end], 0
+  mov [walk_count], 0
+  mov [frame_target], 0
+  mov [frame_walk1_start], 0
+  mov [frame_walk1_dur], 0
+  mov [frame_walk1_end], 0
+  mov [frame_walk2_start], 0
+  mov [frame_walk2_dur], 0
+input_hook_after_block_press:
+
+  mov rcx, block_type
+  call is_down
+  test al, al
+  jz input_hook_end
+  mov [frame_block_end], rbx
+
+  mov eax, [walk_count]
+  test eax,eax
+  jnz input_hook_mega_zip
+
+  mov rcx, forward_type
+  call is_pressed
+  test al, al
+  jz input_hook_after_walk_press
+  mov rax, rbx
+  sub rax, [frame_block_start]
+  mov [frame_walk1_start], rax
+input_hook_after_walk_press:
+  mov rcx, forward_type
+  call is_down
+  test al, al
+  jz input_hook_walk_end
+  mov rax, rbx
+  sub rax, [frame_block_start]
+  inc rax
+  mov [frame_target], rax
+  sub rax, [frame_walk1_start]
+  mov [frame_walk1_dur], rax
+  mov [frame_walk1_end], rbx
+  jmp input_hook_walk_end
+
+input_hook_mega_zip:
+
+  mov rcx, forward_type
+  call is_pressed
+  test al, al
+  jz input_hook_after_walk2_press
+  mov rax, rbx
+  sub rax, [frame_walk1_end]
+  dec rax
+  mov [frame_walk2_start], rax
+input_hook_after_walk2_press:
+  mov rcx, forward_type
+  call is_down
+  test al, al
+  jz input_hook_end
+  mov rax, rbx
+  sub rax, [frame_walk1_end]
+  sub rax, [frame_walk2_start]
+  mov [frame_walk2_dur], rax
+
+input_hook_walk_end:
+  mov rcx, forward_type
+  call is_released
+  test al, al
+  jz input_hook_end
+  mov rax, walk_count
+  inc [rax]
+
+
+input_hook_end:
+  pop rdx
+  pop rcx
+  pop rax
+  pop rbx
+  jmp return_input
+
+// Keyboard hook
+keyboard_hook:
+  push r8
+  sub rsp, 20
+  mov rax,[rcx]
+  call qword ptr [rax+48]
+  add rsp, 20
+  pop r8
+  push rax
+  push rcx
+  push rdx
+  push r8
+
+  test rax,rax
+  jnz keyboard_hook_end
+
+  mov rcx, prev_keyboard
+  mov rdx, keyboard
+  mov r8, 100
+  call my_memcpy
+
+  mov rcx, keyboard
+  mov rdx, [rsp]
+  mov r8, 100
+  call my_memcpy
+
+keyboard_hook_end:
+  pop r8
+  pop rdx
+  pop rcx
+  pop rax
+  jmp return
+
+// Mouse hook
+mouse_hook:
+  push r8
+  sub rsp, 20
+  mov edx,14
+  mov rax,qword ptr ds:[rcx]
+  call qword ptr ds:[rax+48]
+  add rsp, 20
+  pop r8
+  push rax
+  push rcx
+  push rdx
+  push r8
+
+  test rax,rax
+  jnz mouse_hook_end
+
+  mov rcx, prev_mouse
+  mov rdx, mouse
+  mov r8, 14
+  call my_memcpy
+
+  mov rcx, mouse
+  mov rdx, [rsp]
+  mov r8, 14
+  call my_memcpy
+
+mouse_hook_end:
+  pop r8
+  pop rdx
+  pop rcx
+  pop rax
+  jmp return2
+
+INJECT:
+  mov edx, 100
+  jmp keyboard_hook
+  nop
+return:
+
+INJECT2:
+  mov edx, 14
+  jmp mouse_hook
+  nop
+return2:
+
+INJECT_input:
+  jmp input_hook
+  db 90 90 90 90 90
+return_input:
+
+registersymbol(INJECT)
+registersymbol(INJECT2)
+registersymbol(INJECT_input)
+registersymbol(frame)
+registersymbol(frame_block_start)
+registersymbol(frame_block_end)
+registersymbol(frame_walk1_start)
+registersymbol(frame_walk1_dur)
+registersymbol(frame_walk2_start)
+registersymbol(frame_walk2_dur)
+registersymbol(frame_target)
+
+[DISABLE]
+
+INJECT:
+  db BA 00 01 00 00 48 8B 01 FF 50 48
+  // mov edx, 100
+  // mov rax,[rcx]
+  // call qword ptr [rax+48]
+INJECT2:
+  db BA 14 00 00 00 48 8B 01 FF 50 48
+  // mov edx,14
+  // mov rax,qword ptr ds:[rcx]
+  // call qword ptr ds:[rax+48]
+INJECT_input:
+  db 48 8B 01 41 0F 28 C8 FF 50 38
+  // mov rax,qword ptr ds:[rcx]
+  // movaps xmm1,xmm8
+  // call qword ptr ds:[rax+38]
+
+unregistersymbol(INJECT)
+unregisterSymbol(INJECT2)
+unregisterSymbol(INJECT_input)
+unregistersymbol(frame)
+unregistersymbol(frame_block_start)
+unregistersymbol(frame_block_end)
+unregistersymbol(frame_walk1_start)
+unregistersymbol(frame_walk1_dur)
+unregistersymbol(frame_walk2_start)
+unregistersymbol(frame_walk2_dur)
+unregistersymbol(frame_target)
+dealloc(newmem)
+
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>8</ID>
+              <Description>"Walk Start"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>frame_walk1_start</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>16</ID>
+              <Description>"Walk Duration"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>frame_walk1_dur</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>13</ID>
+              <Description>"Target (133/139)"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>frame_target</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>15</ID>
+              <Description>"Extended Start"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>frame_walk2_start</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337054242</ID>
+              <Description>"Extended Duration"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>frame_walk2_dur</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>31</ID>
+              <Description>"Debug"</Description>
+              <Options moHideChildren="1"/>
+              <LastState Value="" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>2</ID>
+                  <Description>"Frame"</Description>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>frame</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>3</ID>
+                  <Description>"Block Start"</Description>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>frame_block_start</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>4</ID>
+                  <Description>"Block Duration"</Description>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>frame_block_end</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>32</ID>
+          <Description>"Enable Fps"</Description>
+          <Options moHideChildren="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : eldenring.exe
+  Version: 
+  Date   : 2022-04-03
+  Author : admin
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,eldenring.exe,48 8B 4B 40 C6 43 38 01 48 85 C9) // should be unique
+alloc(newmem,$1000,INJECT)
+
+label(code)
+label(return)
+label(frametime)
+label(fps)
+
+newmem:
+frametime:
+dd 0
+fps:
+dd 0
+one:
+dd 3F800000
+
+code:
+  mov rcx,[rbx+40]
+  mov byte ptr [rbx+38],01
+  movss xmm6, dword [one]
+  xorps xmm7, xmm7
+  comiss xmm0,xmm7
+  jbe dont_divide
+  divss xmm6,xmm0
+  jmp dont_set_zero
+dont_divide:
+  movaps xmm6,xmm7
+dont_set_zero:
+  movss [frametime], xmm0
+  movss [fps], xmm6
+  jmp return
+
+INJECT:
+  jmp code
+  nop
+  nop
+  nop
+return:
+registersymbol(INJECT)
+registersymbol(frametime)
+registersymbol(fps)
+
+[DISABLE]
+
+INJECT:
+  db 48 8B 4B 40 C6 43 38 01
+
+unregistersymbol(INJECT)
+unregistersymbol(frametime)
+unregistersymbol(fps)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: eldenring.exe+25B2D6A
+
+eldenring.exe+25B2D41: 48 8B D9                 - mov rbx,rcx
+eldenring.exe+25B2D44: 75 63                    - jne eldenring.exe+25B2DA9
+eldenring.exe+25B2D46: 48 8B 49 10              - mov rcx,[rcx+10]
+eldenring.exe+25B2D4A: E8 11 B8 04 00           - call eldenring.exe+25FE560
+eldenring.exe+25B2D4F: 48 8B 4B 28              - mov rcx,[rbx+28]
+eldenring.exe+25B2D53: 48 85 C9                 - test rcx,rcx
+eldenring.exe+25B2D56: 74 05                    - je eldenring.exe+25B2D5D
+eldenring.exe+25B2D58: E8 E3 A5 04 00           - call eldenring.exe+25FD340
+eldenring.exe+25B2D5D: F3 0F 10 47 08           - movss xmm0,[rdi+08]
+eldenring.exe+25B2D62: F3 0F 11 05 7E 12 5B 01  - movss [eldenring.exe+3B63FE8],xmm0
+// ---------- INJECTING HERE ----------
+eldenring.exe+25B2D6A: 48 8B 4B 40              - mov rcx,[rbx+40]
+// ---------- DONE INJECTING  ----------
+eldenring.exe+25B2D6E: C6 43 38 01              - mov byte ptr [rbx+38],01
+eldenring.exe+25B2D72: 48 85 C9                 - test rcx,rcx
+eldenring.exe+25B2D75: 74 17                    - je eldenring.exe+25B2D8E
+eldenring.exe+25B2D77: 48 8B 01                 - mov rax,[rcx]
+eldenring.exe+25B2D7A: 41 83 C9 FF              - or r9d,-01
+eldenring.exe+25B2D7E: 4C 8B 43 48              - mov r8,[rbx+48]
+eldenring.exe+25B2D82: 48 8B 53 50              - mov rdx,[rbx+50]
+eldenring.exe+25B2D86: 48 89 7C 24 20           - mov [rsp+20],rdi
+eldenring.exe+25B2D8B: FF 50 28                 - call qword ptr [rax+28]
+eldenring.exe+25B2D8E: C6 43 38 00              - mov byte ptr [rbx+38],00
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>99</ID>
+              <Description>"fps"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>fps</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>33</ID>
+              <Description>"frametime"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>frametime</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>97</ID>
+      <Description>"Velocity"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ Game   : eldenring.exe
+  Version: 
+  Date   : 2022-03-29
+  Author : admin
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+{$lua}
+local movement = AddressList.getMemoryRecordByID(95)
+local movementMax = AddressList.getMemoryRecordByID(96)
+
+t = t or createTimer()
+t.Interval = 10
+
+t.OnTimer = function()
+	if math.abs(tonumber(movement.Value)) &gt; 5 then
+		movementMax.Description = math.abs(movement.Value)
+	end
+end
+{$asm}
+
+aobscanmodule(INJECT,eldenring.exe,0F 29 44 24 50 F3 0F 10 47 78) // should be unique
+alloc(newmem,$1000,INJECT)
+
+label(x_vel)
+label(y_vel)
+label(z_vel)
+label(movement)
+label(code)
+label(return)
+
+newmem:
+x_vel:
+  dd 0
+y_vel:
+  dd 0
+z_vel:
+  dd 0
+  dd 0
+movement:
+  dd 0
+
+code:
+  movaps [rsp+50],xmm0
+  mov rcx, [rdi+8]
+  mov eax, [rcx+8]
+  mov ecx, [rcx+c]
+  cmp eax, 0x16900000
+  jne skip
+  cmp ecx, 0xffffffff
+  jne skip
+  movaps [x_vel], xmm0
+  mov eax, [r8+8]
+  mov [movement], eax
+skip:
+  jmp return
+
+INJECT:
+  jmp code
+return:
+registersymbol(INJECT)
+registersymbol(x_vel)
+registersymbol(y_vel)
+registersymbol(z_vel)
+registersymbol(movement)
+
+
+[DISABLE]
+
+luacall(t.destroy())
+
+INJECT:
+  db 0F 29 44 24 50
+
+unregistersymbol(INJECT)
+unregistersymbol(x_vel)
+unregistersymbol(y_vel)
+unregistersymbol(z_vel)
+unregistersymbol(movement)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: eldenring.exe+45E724
+
+eldenring.exe+45E6F5: 44 0F 59 F8              - mulps xmm15,xmm0
+eldenring.exe+45E6F9: 0F 57 C0                 - xorps xmm0,xmm0
+eldenring.exe+45E6FC: F3 0F 59 D2              - mulss xmm2,xmm2
+eldenring.exe+45E700: 41 0F 28 CF              - movaps xmm1,xmm15
+eldenring.exe+45E704: 0F 15 C8                 - unpckhps xmm1,xmm0
+eldenring.exe+45E707: 0F 28 87 60 01 00 00     - movaps xmm0,[rdi+00000160]
+eldenring.exe+45E70E: 44 0F C6 F9 C4           - shufps xmm15,xmm1,-3C
+eldenring.exe+45E713: F3 0F 10 4F 70           - movss xmm1,[rdi+70]
+eldenring.exe+45E718: 41 0F 58 C7              - addps xmm0,xmm15
+eldenring.exe+45E71C: F3 0F 5C 8F 80 00 00 00  - subss xmm1,[rdi+00000080]
+// ---------- INJECTING HERE ----------
+eldenring.exe+45E724: 0F 29 44 24 50           - movaps [rsp+50],xmm0
+// ---------- DONE INJECTING  ----------
+eldenring.exe+45E729: F3 0F 10 47 78           - movss xmm0,[rdi+78]
+eldenring.exe+45E72E: F3 0F 5C 87 88 00 00 00  - subss xmm0,[rdi+00000088]
+eldenring.exe+45E736: F3 0F 59 C9              - mulss xmm1,xmm1
+eldenring.exe+45E73A: F3 0F 59 C0              - mulss xmm0,xmm0
+eldenring.exe+45E73E: F3 0F 58 D1              - addss xmm2,xmm1
+eldenring.exe+45E742: F3 0F 58 D0              - addss xmm2,xmm0
+eldenring.exe+45E746: F3 0F 10 05 D2 4B B9 02  - movss xmm0,[eldenring.exe+2FF3320]
+eldenring.exe+45E74E: 0F 2F C2                 - comiss xmm0,xmm2
+eldenring.exe+45E751: 76 1E                    - jna eldenring.exe+45E771
+eldenring.exe+45E753: 80 BF 40 01 00 00 00     - cmp byte ptr [rdi+00000140],00
+}
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>92</ID>
+          <Description>"x_vel"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>x_vel</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>93</ID>
+          <Description>"y_vel"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>y_vel</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>94</ID>
+          <Description>"z_vel"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>z_vel</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>95</ID>
+          <Description>"movement"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>movement</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>96</ID>
+          <Description>"0"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>movement_max</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <LuaScript>-- COMPACT MODE TOGGLE
+function cycleFullCompact()
+
+	local state = getMainForm().Panel5.Visible;
+
+	getMainForm().Splitter1.Visible = not state;
+	getMainForm().Panel4.Visible = not state;
+	getMainForm().Panel5.Visible = not state;
+
+end;
+
+local parent = getMainForm().Menu.Items;
+compactmenuitem = createMenuItem(parent);
+parent.add(compactmenuitem);
+compactmenuitem.Caption = '[Toggle Compact Mode]';
+compactmenuitem.OnClick = cycleFullCompact;
+
+
+-- VALUE LOGGER
+local parent = getMainForm().Menu.Items
+miWatchChangesToAddress = createMenuItem(parent)
+parent.add(miWatchChangesToAddress)
+miWatchChangesToAddress.Caption = '[Value Logger]'
+
+miWatchChangesToAddress.OnClick = function()
+
+  local timePassed = 0
+
+--[[
+    Place GUI elements
+  ]]
+
+  local form = createForm(false)
+  form.Height = 300
+  form.Width = 400
+  form.Caption = 'Watch Changes to Addresses'
+  form.Constraints.MinHeight = 300
+  form.Constraints.MinWidth = 400
+  form.BorderStyle = bsSizeable
+  form.Position = poScreenCenter
+
+  local pnlOptions = createPanel(form)
+  pnlOptions.Align = alLeft
+  pnlOptions.Width = 150
+  pnlOptions.BevelOuter = bvNone
+
+  local lblInterval = createLabel(pnlOptions)
+  lblInterval.AnchorSideLeft.Control = pnlOptions
+  lblInterval.AnchorSideTop.Control = pnlOptions
+  lblInterval.BorderSpacing.Left = 10
+  lblInterval.BorderSpacing.Top = 10
+  lblInterval.Caption = 'Interval'
+
+  local edtInterval = createEdit(pnlOptions)
+  edtInterval.AnchorSideLeft.Control = lblInterval
+  edtInterval.AnchorSideTop.Control = lblInterval
+  edtInterval.AnchorSideTop.Side = asrBottom
+  edtInterval.BorderSpacing.Top = 5
+  edtInterval.Text = getFreezeTimer().Interval
+
+  local rbLogUpdate = createComponentClass('TRadioButton',pnlOptions)
+  rbLogUpdate.parent = pnlOptions
+  rbLogUpdate.AnchorSideLeft.Control = lblInterval
+  rbLogUpdate.AnchorSideTop.Control = edtInterval
+  rbLogUpdate.AnchorSideTop.Side = asrBottom
+  rbLogUpdate.BorderSpacing.Top = 20
+  rbLogUpdate.Caption = 'Log On Update'
+  rbLogUpdate.Checked = true
+
+  local cbBreakpoints = createCheckBox(pnlOptions)
+  cbBreakpoints.AnchorSideLeft.Control = rbLogUpdate
+  cbBreakpoints.AnchorSideTop.Control = rbLogUpdate
+  cbBreakpoints.AnchorSideTop.Side = asrBottom
+  cbBreakpoints.BorderSpacing.Left = 15
+  cbBreakpoints.BorderSpacing.Top = 5
+  cbBreakpoints.Hint = 'Use HW breakpoints to watch for any write to the addresses.\r\nThis will not function properly if all debug registers are in use.'
+  cbBreakpoints.Caption = 'Use Breakpoints'
+  cbBreakpoints.ParentShowHint = false
+  cbBreakpoints.ShowHint = true
+
+  local rbLogPeriodic = createComponentClass('TRadioButton',pnlOptions)
+  rbLogPeriodic.parent = pnlOptions
+  rbLogPeriodic.AnchorSideLeft.Control = lblInterval
+  rbLogPeriodic.AnchorSideTop.Control = cbBreakpoints
+  rbLogPeriodic.AnchorSideTop.Side = asrBottom
+  rbLogPeriodic.BorderSpacing.Top = 5
+  rbLogPeriodic.Caption = 'Log Periodically'
+  rbLogPeriodic.Checked = false
+
+  local cbLimitLogCount = createCheckBox(pnlOptions)
+  cbLimitLogCount.AnchorSideLeft.Control = lblInterval
+  cbLimitLogCount.AnchorSideTop.Control = rbLogPeriodic
+  cbLimitLogCount.AnchorSideTop.Side = asrBottom
+  cbLimitLogCount.BorderSpacing.Top = 20
+  cbLimitLogCount.Caption = 'Limit Max Log Count'
+
+  local edtMaxLogCount = createEdit(pnlOptions)
+  edtMaxLogCount.AnchorSideLeft.Control = cbLimitLogCount
+  edtMaxLogCount.AnchorSideTop.Control = cbLimitLogCount
+  edtMaxLogCount.AnchorSideTop.Side = asrBottom
+  edtMaxLogCount.BorderSpacing.Left = 15
+  edtMaxLogCount.BorderSpacing.Top = 3
+  edtMaxLogCount.Enabled = false
+  edtMaxLogCount.Text = '100'
+
+  local cbReplaceOld = createCheckBox(pnlOptions)
+  cbReplaceOld.AnchorSideLeft.Control = edtMaxLogCount
+  cbReplaceOld.AnchorSideTop.Control = edtMaxLogCount
+  cbReplaceOld.AnchorSideTop.Side = asrBottom
+  cbReplaceOld.BorderSpacing.Top = 3
+  cbReplaceOld.Caption = 'Replace old entries'
+  cbReplaceOld.Enabled = false
+
+  local tbStart = createToggleBox(pnlOptions)
+  tbStart.AnchorSideLeft.Control = pnlOptions
+  tbStart.Align = alBottom
+  tbStart.Height = 40
+  tbStart.Caption = 'Start'
+
+  local lvResults = createListView(form)
+  lvResults.AnchorSideLeft.Control = pnlOptions
+  lvResults.AnchorSideLeft.Side = asrBottom
+  lvResults.Align = alRight
+  lvResults.Anchors = '[akLeft]'
+  lvResults.AutoSort = false
+  lvResults.HideSelection = false
+  lvResults.MultiSelect = true
+  lvResults.ReadOnly = true
+  lvResults.RowSelect = true
+  lvResults.ViewStyle = vsReport
+  lvResults.Columns.add().Caption = 'Time'
+
+
+  local mainMenu = createMainMenu(form)
+
+  local fileMenu = createMenuItem(mainMenu)
+  fileMenu.Caption = 'File'
+  mainMenu.Items.add(fileMenu)
+
+  local miNewWindow = createMenuItem(fileMenu)
+  miNewWindow.Caption = 'New Window'
+  miNewWindow.ShortCut = 16462
+  fileMenu.add(miNewWindow)
+
+
+  local editMenu = createMenuItem(mainMenu)
+  editMenu.Caption = 'Edit'
+  mainMenu.Items.add(editMenu)
+
+  local miCopy = createMenuItem(editMenu)
+  miCopy.Caption = 'Copy'
+  miCopy.ShortCut = 16451
+  editMenu.add(miCopy)
+
+  local miSelectAll = createMenuItem(editMenu)
+  miSelectAll.Caption = 'Select All'
+  miSelectAll.ShortCut = 16449
+  editMenu.add(miSelectAll)
+
+  local miRemoveSelection = createMenuItem(editMenu)
+  miRemoveSelection.Caption = 'Remove Selection'
+  miRemoveSelection.ShortCut = 46
+  editMenu.add(miRemoveSelection)
+
+  local miEditSeparator1 = createMenuItem(editMenu)
+  miEditSeparator1.Caption = '-'
+  editMenu.add(miEditSeparator1)
+
+  local miAddAddress = createMenuItem(editMenu)
+  miAddAddress.Caption = 'Add Address'
+  miAddAddress.ShortCut = 16468
+  editMenu.add(miAddAddress)
+
+  local miRemoveAddress = createMenuItem(editMenu)
+  miRemoveAddress.Caption = 'Remove Address'
+  miRemoveAddress.Enabled = false
+  editMenu.add(miRemoveAddress)
+
+
+  local pmListView = createPopupMenu(form)
+  lvResults.PopupMenu = pmListView
+
+  local pmiPause = createMenuItem(pmListView)
+  pmiPause.AutoCheck = true
+  pmiPause.Caption = 'Pause'
+  pmiPause.Enabled = false
+  pmListView.Items.add(pmiPause)
+
+  local pmiAddAddress = createMenuItem(pmListView)
+  pmiAddAddress.Caption = 'Add Address'
+  pmListView.Items.add(pmiAddAddress)
+
+  local pmiRemoveAddress = createMenuItem(pmListView)
+  pmiRemoveAddress.Caption = 'Remove Address'
+  pmiRemoveAddress.Enabled = false
+  pmListView.Items.add(pmiRemoveAddress)
+
+
+--[[
+    End placement of GUI, begin implementation
+  ]]
+
+  --[['addresses' = array of tables with keys:
+    (int) address : location in memory,
+    (vtType) type : value type,
+    (string) typeName: value type as string (for custom types)
+    (table) prevBytes : AoB,  -- if #prevBytes == 0, error in reading data
+    (int) size : value size,
+    (bool) hex : hexadecimal value,
+    (bool) signed : signed value
+    (int) index : identifier (which column)
+  ]]
+  local addresses = {add = function(self, t)
+      self[#self+1] = t
+      t.index = #self
+
+      local mi = createMenuItem(pmiRemoveAddress)
+      mi.Caption = string.format('%08X', t.address or 0)
+      mi.OnClick = function() self:remove(t.index) end
+      pmiRemoveAddress.add(mi)
+
+      local c = lvResults.Columns.add()
+      c.Caption = mi.Caption
+      c.Width = 70
+
+      miRemoveAddress.Enabled = true
+      pmiRemoveAddress.Enabled = true
+
+      return t
+    end,
+
+    remove = function(self, i)
+      table.remove(self,i)
+      for j=i,#self do
+        self[j].index = j
+      end
+
+      pmiRemoveAddress[i-1].destroy()
+
+      lvResults.Columns[i].destroy()
+
+      if #self == 0 then
+        lvResults.Items.clear()
+        miRemoveAddress.Enabled = false
+        pmiRemoveAddress.Enabled = false
+      else
+        for j=0, lvResults.Items.Count-1 do
+          lvResults.Items[j].SubItems.remove(i-1)
+        end
+      end
+    end
+  }
+
+  local aobmt = {
+    __eq = function(lhs,rhs)
+      if #lhs ~= #rhs then return false end
+      for i=1,#lhs do
+        if lhs[i] ~= rhs[i] then return false end
+      end
+      return true
+    end
+  }
+  local addrmt = {
+    __tostring = function(self)
+      if #self.prevBytes == 0 then
+        return 'Err'
+      end
+      local ret
+      if self.type == vtByte then
+        ret = self.prevBytes[1]
+      elseif self.type == vtWord then
+        ret = byteTableToWord(self.prevBytes)
+      elseif self.type == vtDword then
+        ret = byteTableToDword(self.prevBytes)
+      elseif self.type == vtQword then
+        ret = byteTableToQword(self.prevBytes)
+      elseif self.type == vtSingle then
+        return tostring(byteTableToFloat(self.prevBytes))
+      elseif self.type == vtDouble then
+        return tostring(byteTableToDouble(self.prevBytes))
+      elseif self.type == vtString then
+        return byteTableToString(self.prevBytes)
+      elseif self.type == vtUnicodeString then
+        return byteTableToWideString(self.prevBytes)
+      elseif self.type == vtByteArray then
+        local format = self.hex and '%02X' or '%d'
+        ret = {}
+        for i,v in ipairs(self.prevBytes) do
+          ret[i] = string.format(format, self.signed and v - ((v &amp; 128) &lt;&lt; 1) or v)
+        end
+        return table.concat(ret, ' ')
+      elseif self.type == vtCustom then
+        -- assumed that mgr.inz.Player's customTypesExt is loaded
+        local t = getCustomType(self.typeName)
+        ret = t.getValue(self.address)
+        if t.usesFloat then return tostring(ret) end
+      else
+        error('Value associated with an unknown type')
+      end
+
+      -- integral types (including non-float custom types) return here
+      return self.hex and string.format('%X',ret) or tostring(self.signed and (ret &amp; (1 &lt;&lt; self.size*8)-1) - ((ret &amp; 1 &lt;&lt; self.size*8-1) &lt;&lt; 1) or ret)
+    end
+  }
+
+
+  local mainTimer = createTimer(form, false)
+  mainTimer.Interval = tonumber(edtInterval.Text) or 100
+  mainTimer.OnTimer = function(timer)
+    timePassed = timePassed + mainTimer.Interval
+
+    if pmiPause.Checked then return end
+    local newitem  -- potential new item in the ListView
+
+    for i,v in ipairs(addresses) do
+      local bytes = setmetatable(readBytes(v.address, v.size, true) or {}, aobmt)
+      if newitem then
+        -- another address updated, copy this one regardless
+        v.prevBytes = bytes
+        newitem.SubItems.add(tostring(v))
+      elseif bytes ~= v.prevBytes or rbLogPeriodic.Checked then
+        -- first changed address (or log periodic); create new entry
+        v.prevBytes = bytes
+
+        newitem = lvResults.Items.add()
+        newitem.Caption = timePassed
+
+        if cbLimitLogCount.Checked then
+          if cbReplaceOld.Checked then
+            if lvResults.Items.Count &gt; tonumber(edtMaxLogCount.Text) then
+              lvResults.Items[0].delete()
+            end
+          elseif lvResults.Items.Count &gt;= tonumber(edtMaxLogCount.Text) then
+            tbStart.Checked = false
+          end
+        end
+
+        for j = 1, i do      -- add addresses before this one as well
+          newitem.SubItems.add(tostring(addresses[j]))
+        end
+      end
+    end -- end loop through addresses
+  end -- end mainTimer.OnTimer
+
+--[[
+    End main implementation, begin GUI events
+  ]]
+  form.OnClose = function(sender)
+    return caFree
+  end
+
+
+  edtInterval.OnExit = function(sender)
+    local i = tonumber(sender.Text)
+    if i and i &gt;= 1 then
+      mainTimer.Interval = math.floor(i)
+    end
+    sender.Text = mainTimer.Interval
+  end
+
+  rbLogUpdate.OnChange = function(sender)
+    if sender.Checked then
+      cbBreakpoints.Enabled = true
+      edtInterval.Text = tonumber(getFreezeTimer().Interval)
+    end
+  end
+
+  cbBreakpoints.OnChange = function(sender)
+    lblInterval.Enabled = not sender.Checked
+    edtInterval.Enabled = not sender.Checked
+  end
+
+
+  rbLogPeriodic.OnChange = function(sender)
+    if sender.Checked then
+      cbBreakpoints.Enabled = false
+      edtInterval.Text = tonumber(getUpdateTimer().Interval)
+    end
+    lblInterval.Enabled = sender.Checked or not cbBreakpoints.Checked
+    edtInterval.Enabled = sender.Checked or not cbBreakpoints.Checked
+  end
+
+  cbLimitLogCount.OnChange = function(sender)
+    edtMaxLogCount.Enabled = sender.Checked
+    cbReplaceOld.Enabled = sender.Checked
+  end
+
+  edtMaxLogCount.OnExit = function(sender)
+    local n = tonumber(sender.Text)
+    sender.Text = n and n &gt;= 1 and math.floor(n) or '100'
+  end
+
+  tbStart.OnChange = function(sender)
+    if sender.Checked then
+      if lvResults.Items.Count &gt; 0 and mrYes ~= messageDialog('Starting will clear the current results. Continue?', mtWarning, mbYes, mbCancel) then
+        sender.Checked = false
+        return
+      end
+      sender.Caption = 'Stop'
+
+      timePassed = 0;
+      mainTimer.Interval = tonumber(edtInterval.Text)
+
+      lvResults.Items.clear()
+      local firstitem = lvResults.Items.add()
+      firstitem.Caption = timePassed
+
+      for i,v in ipairs(addresses) do
+        v.prevBytes = setmetatable(readBytes(v.address, v.size, true) or {}, aobmt)
+        firstitem.SubItems.add(tostring(v))
+      end
+
+      lblInterval.Enabled = false
+      edtInterval.Enabled = false
+      rbLogUpdate.Enabled = false
+      cbBreakpoints.Enabled = false
+      rbLogPeriodic.Enabled = false
+      cbLimitLogCount.Enabled = false
+      edtMaxLogCount.Enabled = false
+      cbReplaceOld.Enabled = false
+      pmiPause.Enabled = true
+
+      if rbLogUpdate.Checked and cbBreakpoints.Checked then
+        --setup breakpoints
+        if not debug_isDebugging() then debugProcess() end
+
+        for _,v in ipairs(addresses) do
+          debug_setBreakpoint(v.address, v.size, bptWrite, bpmDebugRegister, function()
+            if pmiPause.Checked then return end
+            v.prevBytes = setmetatable(readBytes(v.address, v.size, true), aobmt)
+            local newitem = lvResults.Items.add()
+            newitem.Caption = timePassed
+
+            if cbLimitLogCount.Checked then
+              if cbReplaceOld.Checked then
+                if lvResults.Items.Count &gt; tonumber(edtMaxLogCount.Text) then
+                  lvResults.Items[0].delete()
+                end
+              elseif lvResults.Items.Count &gt;= tonumber(edtMaxLogCount.Text) then
+                tbStart.Checked = false
+              end
+            end
+
+            for _,v2 in ipairs(addresses) do
+              newitem.SubItems.add(tostring(v2))
+            end
+
+            debug_continueFromBreakpoint(co_run)
+            return 0
+          end)
+        end
+      else
+        mainTimer.Enabled = true
+      end
+    else
+      sender.Caption = 'Start'
+      if rbLogUpdate.Checked and cbBreakpoints.Checked then
+        for _,v in ipairs(addresses) do
+          debug_removeBreakpoint(v.address)
+        end
+      else
+        mainTimer.Enabled = false
+      end
+
+      lblInterval.Enabled = true
+      edtInterval.Enabled = true
+      rbLogUpdate.Enabled = true
+      cbBreakpoints.Enabled = rbLogUpdate.Checked
+      rbLogPeriodic.Enabled = true
+      cbLimitLogCount.Enabled = true
+      edtMaxLogCount.Enabled = cbLimitLogCount.Checked
+      cbReplaceOld.Enabled = cbLimitLogCount.Checked
+      pmiPause.Enabled = false
+      pmiPause.Checked = false
+    end
+  end
+
+
+  miNewWindow.OnClick = function(sender)
+    miWatchChangesToAddress.DoClick()
+  end
+
+  miCopy.OnClick = function(sender)
+    local ret = {}
+    for i=0, lvResults.Items.Count - 1 do
+      if lvResults.Items[i].Selected then
+        ret[#ret+1] = lvResults.Items[i].Caption .. '\t' .. lvResults.Items[i].SubItems.Text:gsub('\r\n(.)','\t%1')
+      end
+    end
+    writeToClipboard(table.concat(ret))
+  end
+
+  miSelectAll.OnClick = function(sender)
+    for i=0, lvResults.Items.Count - 1 do
+      lvResults.Items[i].Selected = true
+    end
+  end
+
+  miRemoveSelection.OnClick = function(sender)
+    for i = lvResults.Items.Count - 1, 0, -1 do
+      if lvResults.Items[i].Selected then
+        lvResults.Items[i].destroy()
+      end
+    end
+  end
+
+  miAddAddress.OnClick = function(sender)
+    -- create GUI
+    local addAddressForm = createForm(false)
+    addAddressForm.Height = 165
+    addAddressForm.Width = 220
+    addAddressForm.BorderIcons = '[biSystemMenu, biMinimize]'
+    addAddressForm.BorderStyle = bsSingle
+    addAddressForm.Caption = 'Add Address'
+    addAddressForm.Position = poScreenCenter
+
+    local edtAddress = createEdit(addAddressForm)
+    edtAddress.AnchorSideTop.Control = addAddressForm
+    edtAddress.AnchorSideRight.Control = addAddressForm
+    edtAddress.AnchorSideRight.Side = asrBottom
+    edtAddress.Height = 23
+    edtAddress.Width = 130
+    edtAddress.Anchors = '[akTop, akRight]'
+    edtAddress.BorderSpacing.Top = 9
+    edtAddress.BorderSpacing.Right = 10
+
+    local cmbValueType = createComboBox(addAddressForm)
+    cmbValueType.AnchorSideLeft.Control = edtAddress
+    cmbValueType.AnchorSideTop.Control = edtAddress
+    cmbValueType.AnchorSideTop.Side = asrBottom
+    cmbValueType.AnchorSideRight.Control = addAddressForm
+    cmbValueType.AnchorSideRight.Side = asrBottom
+    cmbValueType.Height = 23
+    cmbValueType.Anchors = '[akTop, akLeft, akRight]'
+    cmbValueType.BorderSpacing.Top = 10
+    cmbValueType.BorderSpacing.Right = 10
+    cmbValueType.ItemHeight = 15
+
+    local edtValueSize = createEdit(addAddressForm)
+    edtValueSize.AnchorSideLeft.Control = edtAddress
+    edtValueSize.AnchorSideLeft.Side = asrCenter
+    edtValueSize.AnchorSideTop.Control = cmbValueType
+    edtValueSize.AnchorSideTop.Side = asrBottom
+    edtValueSize.AnchorSideRight.Control = addAddressForm
+    edtValueSize.AnchorSideRight.Side = asrBottom
+    edtValueSize.Height = 23
+    edtValueSize.Anchors = '[akTop, akLeft, akRight]'
+    edtValueSize.BorderSpacing.Top = 10
+    edtValueSize.BorderSpacing.Right = 10
+    edtValueSize.Enabled = false
+    edtValueSize.Text = '4'
+
+    local lblAddress = createLabel(addAddressForm)
+    lblAddress.AnchorSideTop.Control = edtAddress
+    lblAddress.AnchorSideTop.Side = asrCenter
+    lblAddress.AnchorSideRight.Control = edtAddress
+    lblAddress.Anchors = '[akTop, akRight]'
+    lblAddress.BorderSpacing.Right = 10
+    lblAddress.Caption = 'Address:'
+
+    local lblValueType = createLabel(addAddressForm)
+    lblValueType.AnchorSideTop.Control = cmbValueType
+    lblValueType.AnchorSideTop.Side = asrCenter
+    lblValueType.AnchorSideRight.Control = cmbValueType
+    lblValueType.Anchors = '[akTop, akRight]'
+    lblValueType.BorderSpacing.Right = 10
+    lblValueType.Caption = 'Value Type:'
+
+    local lblValueSize = createLabel(addAddressForm)
+    lblValueSize.AnchorSideTop.Control = edtValueSize
+    lblValueSize.AnchorSideTop.Side = asrCenter
+    lblValueSize.AnchorSideRight.Control = edtValueSize
+    lblValueSize.Anchors = '[akTop, akRight]'
+    lblValueSize.BorderSpacing.Right = 10
+    lblValueSize.Caption = 'Value Size:'
+    lblValueSize.Enabled = false
+
+    local cbHex = createCheckBox(addAddressForm)
+    cbHex.AnchorSideLeft.Control = addAddressForm
+    cbHex.AnchorSideTop.Control = lblValueSize
+    cbHex.AnchorSideTop.Side = asrBottom
+    cbHex.BorderSpacing.Left = 20
+    cbHex.BorderSpacing.Top = 15
+    cbHex.Caption = 'Hexadecimal'
+
+    local cbSigned = createCheckBox(addAddressForm)
+    cbSigned.AnchorSideLeft.Control = cbHex
+    cbSigned.AnchorSideLeft.Side = asrBottom
+    cbSigned.AnchorSideTop.Control = cbHex
+    cbSigned.AnchorSideTop.Side = asrCenter
+    cbSigned.BorderSpacing.Left = 18
+    cbSigned.Caption = 'Signed'
+    cbSigned.Checked = getSettingsForm().cbShowAsSigned.Checked
+    cbHex.Enabled = not cbSigned.Checked
+
+    local cbWChar = createCheckBox(addAddressForm)
+    cbWChar.AnchorSideLeft.Control = cbHex
+    cbWChar.AnchorSideTop.Control = cbHex
+    cbWChar.AnchorSideTop.Side = asrBottom
+    cbWChar.BorderSpacing.Top = 5
+    cbWChar.Caption = 'UTF-16'
+    cbWChar.Enabled = false
+
+    local btnOK = createButton(addAddressForm)
+    btnOK.AnchorSideRight.Control = addAddressForm
+    btnOK.AnchorSideRight.Side = asrBottom
+    btnOK.AnchorSideBottom.Control = addAddressForm
+    btnOK.AnchorSideBottom.Side = asrBottom
+    btnOK.Height = 25
+    btnOK.Width = 75
+    btnOK.Anchors = '[akRight, akBottom]'
+    btnOK.BorderSpacing.Right = 20
+    btnOK.BorderSpacing.Bottom = 5
+    btnOK.Caption = 'OK'
+
+    -- types
+    types = {'Byte','2 Bytes','4 Bytes','8 Bytes','Float','Double','String','Array of Bytes'}
+
+    -- support for mgr.inz.Player's customTypesExt
+
+    if customTypesExt and getCustomTypeCount and getCustomType then
+      customTypesExt.refresh()
+      for _,v in ipairs(customTypesExt.customTypes) do
+        types[#types+1] = v.name
+      end
+    end
+
+    cmbValueType.Items.Text = table.concat(types,'\r\n')
+    cmbValueType.ItemIndex = 2
+
+    -- GUI events
+
+    addAddressForm.OnClose = function(sender)
+      return caFree
+    end
+
+    cmbValueType.OnChange = function(sender)
+      local i = sender.ItemIndex
+      cbWChar.Enabled = false
+      cbWChar.Checked = false
+      cbHex.Checked = false
+      cbSigned.Checked = false
+      cbHex.Enabled = true
+      cbSigned.Enabled = true
+      if i &lt; 4 then  --integral
+        cbSigned.Checked = getSettingsForm().cbShowAsSigned.Checked
+        edtValueSize.Enabled = false
+        edtValueSize.Text = tostring(1 &lt;&lt; i)
+      elseif i &lt; 6 then -- float
+        cbSigned.Checked = true
+        cbSigned.Enabled = false
+        edtValueSize.Enabled = false
+        edtValueSize.Text = tostring(1 &lt;&lt; i-2)
+      elseif i &gt; 7 then -- vtCustom
+        edtValueSize.Text = getCustomType(types[i+1]).bytesize
+      else  --string / AoB
+        edtValueSize.Enabled = true
+        edtValueSize.Text = '10'
+        if i == 6 then
+          cbHex.Enabled = false
+          cbSigned.Enabled = false
+          cbWChar.Enabled = true
+        else  -- i == 7
+          cbHex.Checked = true
+        end
+      end
+      lblValueSize.Enabled = edtValueSize.Enabled
+    end
+
+    edtValueSize.OnExit = function(sender)
+      sender.Text = tonumber(sender.Text) or '10'
+    end
+
+    cbHex.OnChange = function(sender)
+      cbSigned.Enabled = not sender.Checked
+      if sender.Checked then
+        cbSigned.Checked = false
+      end
+    end
+
+    cbSigned.OnChange = function(sender)
+      cbHex.Enabled = not sender.Checked
+      if sender.Checked then
+        cbHex.Checked = false
+      end
+    end
+
+    btnOK.OnClick = function(sender)
+      local err = errorOnLookupFailure(false)
+      local addr = getAddress(edtAddress.Text)
+      if addr == 0 then
+        showMessage('Could not determine what "'..edtAddress.Text..'" means.')
+        return
+      end
+      errorOnLookupFailure(err)
+
+      local vi = cmbValueType.ItemIndex
+      local addr = addresses:add(setmetatable({address = addr, type = 0, typeName = types[vi+1], size = tonumber(edtValueSize.Text) * (cbWChar.Checked and 2 or 1), hex = cbHex.Checked, signed = cbSigned.Checked}, addrmt))
+
+      if vi == 0 then
+        addr.type = vtByte
+      elseif  vi == 1 then
+        addr.type = vtWord
+      elseif  vi == 2 then
+        addr.type = vtDword
+      elseif  vi == 3 then
+        addr.type = vtQword
+      elseif  vi == 4 then
+        addr.type = vtSingle
+      elseif  vi == 5 then
+        addr.type = vtDouble
+      elseif  vi == 6 then
+        addr.type = cbWChar.Checked and vtUnicodeString or vtString
+      elseif  vi == 7 then
+        addr.type = vtByteArray
+      else
+        addr.type = vtCustom
+      end
+
+      addAddressForm.close()
+    end
+
+    addAddressForm.showModal()
+  end
+
+  miRemoveAddress.OnClick = function(sender)
+    local err = errorOnLookupFailure(false)
+    local addr = getAddress(inputQuery('Remove Address','Which address should be removed?',''))
+    errorOnLookupFailure(err)
+    if addr == 0 then return end
+    for i,v in ipairs(addresses) do
+      if v.address == addr then
+        addresses:remove(v.index)
+      end
+    end
+  end
+
+  pmiAddAddress.OnClick = miAddAddress.OnClick
+
+  form.show()
+end
+</LuaScript>
+</CheatTable>
